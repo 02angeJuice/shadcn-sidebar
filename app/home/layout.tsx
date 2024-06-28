@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Home",
   description: "Home Page",
 };
-function RootLayoutHome({ children }: { children: React.ReactNode }) {
+function HomeRootLayout({ children }: { children: React.ReactNode }) {
   return (
     <div>
       <NavbarComponent />
@@ -20,4 +20,4 @@ function RootLayoutHome({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default RootLayoutHome;
+export default HomeRootLayout;

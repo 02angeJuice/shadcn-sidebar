@@ -3,10 +3,10 @@ import NavbarComponent from "../components/Navbar";
 import { SidebarMenu } from "../components/Sidebar";
 
 export const metadata: Metadata = {
-  title: "Routing",
-  description: "Routing Page",
+  title: "Master",
+  description: "Master Page",
 };
-function RoutingRootLayout({ children }: { children: React.ReactNode }) {
+function MasterRootLayout({ children }: { children: React.ReactNode }) {
   return (
     <div>
       <NavbarComponent />
@@ -20,4 +20,4 @@ function RoutingRootLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default RoutingRootLayout;
+export default MasterRootLayout;

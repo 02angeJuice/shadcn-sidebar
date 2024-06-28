@@ -22,6 +22,7 @@ import * as Icon from "react-feather";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { ThemeContext } from "./Provider";
 import { SidebarMenu } from "./Sidebar";
+import { createClient } from "@/utils/supabase/client";
 
 export default function NavbarComponent() {
   const router = useRouter();
@@ -33,11 +34,16 @@ export default function NavbarComponent() {
     theme?.setTheme(e ? "dark" : "light");
   };
 
-  const logout = () => {
-    localStorage.removeItem("user");
+  const logout = async () => {
+    // 'use server';
 
-    router.replace("/");
-    router.refresh();
+    const supabase = createClient();
+
+    await supabase.auth.signOut();
+    return router.replace("/");
+
+    // router.replace("/");
+    // router.refresh();
   };
 
   return (
@@ -56,7 +62,7 @@ export default function NavbarComponent() {
                 <SheetContent side={"left"} className="w-[300px] sm:w-[340px]">
                   <SheetHeader>
                     <SheetTitle className="text-left text-xl font-bold ml-3">
-                      Brand
+                      ICI
                     </SheetTitle>
                     <SheetDescription>
                       <SidebarMenu />
@@ -67,9 +73,9 @@ export default function NavbarComponent() {
             </div>
             <a
               className="flex-none text-xl ml-4 font-semibold text-white"
-              href="/dashboard"
+              href="/home"
             >
-              Brand
+              ICI
             </a>
           </div>
           <div className="flex items-center">
@@ -91,12 +97,12 @@ export default function NavbarComponent() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
                 <DropdownMenuItem
-                  onClick={() => logout()}
+                  onClick={logout}
                   className="text-red-400 py-2"
                 >
                   <span>
                     <Icon.LogOut size={15} className="mr-2" />
-                  </span>{" "}
+                  </span>
                   Logout
                 </DropdownMenuItem>
               </DropdownMenuContent>

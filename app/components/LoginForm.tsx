@@ -17,29 +17,70 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
+import { createClient } from "@/utils/supabase/client";
 
 function LoginForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = async () => {
+  // const onSubmit = async () => {
+  //   setLoading(true);
+  //   //* async loading simulation
+  //   setTimeout(() => {
+  //     toast("Login Success", {
+  //       className: "bg-green-500",
+  //       description: "Redirect to home page",
+  //     });
+  //     router.replace("/home");
+  //     setLoading(false);
+  //   }, 300);
+  // };
+
+  async function onSubmit(values: z.infer<typeof LoginFormSchema>) {
+    const supabase = createClient();
+
     setLoading(true);
-    //* async loading simulation
-    setTimeout(() => {
+    console.log(values);
+    // Handle form submission
+    setLoading(false);
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: values.email,
+      password: values.password,
+    });
+
+    // if (error) {
+    //   console.log("error");
+    // } else {
+    //   console.log("ok");
+    // }
+
+    if (error) {
+      toast("Login Failed", {
+        className: "bg-red-500",
+        description: "Check your email or password",
+      });
+
+      // return redirect("/login?message=Could not authenticate user");
+      return router.replace("/");
+    } else {
       toast("Login Success", {
         className: "bg-green-500",
         description: "Redirect to home page",
       });
-      router.replace("/home");
-      setLoading(false);
-    }, 300);
-  };
+
+      // return redirect("/login?message=Could not authenticate user");
+      return router.replace("/home");
+    }
+
+    // return redirect("/protected");
+  }
 
   const form = useForm<z.infer<typeof LoginFormSchema>>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
-      email: "user@example.com",
-      password: "user",
+      email: "",
+      password: "",
     },
   });
 
@@ -53,7 +94,7 @@ function LoginForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="" {...field} />
+                <Input placeholder="Enter Email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -69,7 +110,7 @@ function LoginForm() {
                 <Input
                   autoComplete=""
                   type="password"
-                  placeholder=""
+                  placeholder="Enter Password"
                   {...field}
                 />
               </FormControl>

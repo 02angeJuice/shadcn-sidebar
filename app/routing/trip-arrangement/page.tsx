@@ -14,7 +14,7 @@ import { ThemeContext } from "../../components/Provider";
 import TitlePage from "../../components/TitlePage";
 import CreateForm from "./CreateForm";
 
-function CreateOrderPage() {
+function DashboardPage() {
   const theme = useContext(ThemeContext);
 
   return (
@@ -67,4 +67,4 @@ function CreateOrderPage() {
   );
 }
 
-export default CreateOrderPage;
+export default DashboardPage;
